@@ -1,0 +1,22 @@
+1. Завершить подключение к PostgreSQL
+Убедиться, что PostgreSQL работает и ты можешь подключаться к нему через pgAdmin.
+
+Проверить, что база dreamember создана.
+
+Создать таблицу dreams с колонками:
+id SERIAL PRIMARY KEY,
+text TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP.
+
+2. Переписать сервер FastAPI для работы с PostgreSQL
+Установить библиотеку psycopg2-binary, если ещё не установил.
+
+Создать SQLAlchemy-модель DreamDB, соответствующую таблице.
+
+Настроить подключение к базе через SQLAlchemy (create_engine, SessionLocal, Base).
+
+Добавить эндпоинт POST /dreams — сохраняет сон в базу.
+
+Добавить эндпоинт GET /dreams — возвращает все сны.
+
+Убедиться, что всё работает через Swagger UI.
