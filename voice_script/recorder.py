@@ -73,4 +73,3 @@ if __name__ == "__main__":
     data, sr = record_audio()
     print(f"Captured {len(data)} bytes @ {sr} Hz")
     save_wav(data, sr)
-
