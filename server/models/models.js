@@ -11,7 +11,7 @@ const User = sequelize.define('user', {
 const Dream = sequelize.define('dream', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     deviceID: {type: DataTypes.STRING, allowNull: false},
-    text: {type: DataTypes.STRING, allowNull: false}
+    text: {type: DataTypes.TEXT, allowNull: false}
 })
 
 // User.hasMany(Dream);
