@@ -17,7 +17,8 @@
         .link:hover { text-decoration: underline; }
 
         /* Header */
-        header { background: #fff; border-bottom: 1px solid #ccc; padding: 16px; display: flex; align-items: center; }
+        header { background: #fff; border-bottom: 1px solid #ccc; padding: 10px 16px; display: flex; align-items: center; }
+        .main-title { font-size: 32px; font-weight: 700; color: #2C2C2C; margin-left: 14px;}
         .moon-button { background: transparent; border: none; padding: 8px; }
         .moon-button svg { width: 24px; height: 24px; stroke: #2C2C2C; }
         .nav-links { display: flex; gap: 12px; margin-left: 12px; }
@@ -27,7 +28,7 @@
         .auth-buttons button { padding: 8px 12px; border-radius: 4px; font-size: 16px; border: 1px solid #2C2C2C; }
         .auth-buttons .sign-in { background: #e3e3e3; color: #000; }
         .auth-buttons .register { background: #2C2C2C; color: #fff; }
-        .auth-buttons > span { display: block; font-size: 16px; padding: 10px 0; }
+        .auth-buttons > span { display: block; font-size: 20px; padding: 10px 0; font-weight: normal;}
 
         /* Action Buttons */
         #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
@@ -80,7 +81,7 @@
         .title-block .subtitle { font-size: 24px; font-weight: 400; color: #444; }
         .login-content label { display: flex; flex-direction: column; gap: 8px; }
         .login-content input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        .login-content button.submit { padding: 12px; width: 100%; background: #2C2C2C; color: #fff; border: none; border-radius: 4px; font-size: 16px; }
+        .login-content button.submit { padding: 12px; background: #2C2C2C; color: #fff; border: none; border-radius: 4px; font-size: 16px; min-width: 120px;}
         .login-buttons { display: flex; gap: 8px; margin-left: auto; }
         .error { color: red; font-size: 96%; }
 
@@ -88,7 +89,7 @@
 
 
         /* View Dream Page */
-        .view-section { background: #fff; padding: 40px; border-radius: 8px; max-width: 800px; margin: 40px auto; min-height: 400px; }
+        .view-section { background: #fff; padding: 40px; border-radius: 8px; max-width: 800px; margin: 40px auto; min-height: 200px; }
         #view-title { font-size: 24px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         #view-date { font-size: 16px; color: #757575; margin-bottom: 16px; }
         #view-content { font-size: 18px; color: #333; line-height: 1.5; word-wrap: break-word; overflow-y: auto; max-height: 600px; }
@@ -97,15 +98,16 @@
 <body>
     <header>
         <button class="moon-button" aria-label="Home" onclick="navigate('main')">
-            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 22 22">
                 <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"></path>
             </svg>
+            <span class="main-title">dremember</span>
         </button>
-        <nav class="nav-links">
+        <!-- <nav class="nav-links">
             <button id="nav-record" onclick="newDream()">Record dream</button>
-        </nav>
+        </nav> -->
         <div class="auth-buttons">
-            <span id="auth-name" class="link" onclick="navigate('login', 'profile')"></span>
+            <span id="auth-name" class="link" onclick="navigate('login', { type: 'profile' })"></span>
             <button id="sign-in" class="sign-in" onclick="navigate('login')">Войти</button>
             <!-- <button class="register" onclick="navigate('login')">Register</button> -->
         </div>
@@ -114,29 +116,15 @@
         <!-- Home -->
         <div id="main" class="page active">
             <section class="intro">
-                <h2>Recent dreams</h2>
-                <p>How did you sleep today?</p>
+                <h2>Последние сны</h2>
+                <p>Как тебе спалось сегодня?</p>
             </section>
-            <div id="no-dreams" class="dream-card">
-                <h3>You have yet to record a dream...</h3>
-                <p>Use the "Record dream" button above</p>
-            </div>
-            <div id="no-dreams" class="dream-card">
-                <h3>You have yet to record a dream...</h3>
-                <p>Use the "Record dream" button above</p>
-            </div>
-            <div id="no-dreams" class="dream-card">
-                <h3>You have yet to record a dream...</h3>
-                <p>Use the "Record dream" button above</p>
-            </div>
-            <div id="no-dreams" class="dream-card">
-                <h3>You have yet to record a dream...</h3>
-                <p onclick="navigate('view')">Use the "Record dream" button above</p>
-            </div>
+            <section id="dreams"></div>
+            </section>
         </div>
 
         <!-- Record -->
-        <div id="record" class="page">
+        <!-- <div id="record" class="page">
             <section class="record-section">
                 <div class="record-header">
                     <input id="dream-title" type="text" placeholder="Title" />
@@ -150,15 +138,15 @@
                     </div>
                 </div>
             </section>
-        </div>
+        </div> -->
 
         <!-- View -->
         <div id="view" class="page">
             <section class="view-section">
-                <button id="back-btn" onclick="navigate('main')">← Back</button>
-                <h3 id="view-title">Заголовок сна</h3>
-                <div id="view-date">12.05.2025</div>
-                <p id="view-content">Свойства выравнивания теперь полностью определены в спецификации Box Alignment. Она детализирует, как работает выравнивание в различных макетах. Это означает, что в CSS Grid можно использовать те же свойства, что и в Flexbox — а в будущем в других макетах тоже. Поэтому любая новая функция выравнивания Flexbox будет подробно описана в спецификации Box Alignment, а не в следующей версии Flexbox.</p>
+                <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;&nbsp;Назад</button>
+                <h3 id="view-title"></h3>
+                <!-- <div id="view-date">12.05.2025</div> -->
+                <p id="view-content"></p>
             </section>
         </div>
 
@@ -168,7 +156,8 @@
                 <button class="system-close" onclick="navigate('main')">&times;</button>
                 <div class="title-block">
                     <div class="title">Войдите</div>
-                    <div class="subtitle">или <span class="link" onclick="navigate('login', 'registration')">зарегистритуйтесь</span></div>
+                    <div class="subtitle">или зарегистритуйтесь</div>
+                    <!-- <div class="subtitle">или <span class="link" onclick="navigate('login', { type: 'registration' })">зарегистритуйтесь</span></div> -->
                 </div>
                 <div id="login-error" class="error"></div>
                 <label>
@@ -184,7 +173,8 @@
                     <input id="login-deviceid" type="text" placeholder="Введите серийный номер колонки" maxlength="16" pattern=".{16}" title="Must be exactly 16 characters" />
                 </label>
                 <div class="login-buttons">
-                    <button class="submit" onclick="login()">Отправить</button>
+                    <button id="submit" class="submit" onclick="login()">Войти</button>
+                    <button id="registration" class="submit" onclick="navigate('login', { type: 'registration' })">Регистрация</button>
                     <button id="logout" class="submit" onclick="clearAuth();navigate('main');">Выйти</button>
                 </div>
             </div>
@@ -194,6 +184,7 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             await checkAuth();
+            await getDreams();
         });
 
         let editingCard = null;
@@ -205,7 +196,7 @@
                 deviceID : document.getElementById('login-deviceid').value,
             };
             const errors = [];
-console.log('[ROUTE]: ' + route);
+
             const localToken = localStorage.getItem('authToken');
             if (route === 'profile' && !localToken) {
                 clearAuth();
@@ -250,7 +241,7 @@ console.log('[ROUTE]: ' + route);
                     headers,
                     body: JSON.stringify(data)
                 })
-console.log('[RESPONCE]:', res)
+
                 const json = await res.json();
 
                 if (res.status === 200) {
@@ -285,10 +276,6 @@ console.log('[RESPONCE]:', res)
                     $error.innerHTML = '<p>' + errors.join('</p><p>') + '</p>';
                 }
             }
-
-            // .then(res => res.json())
-            // .then(data => console.log('Успешно:', data))
-            // .catch(error => console.error('Ошибка:', error));
         }
 
         async function checkAuth(token) {
@@ -350,17 +337,76 @@ console.log('[RESPONCE]:', res)
             document.getElementById('login-deviceid').value = '';
         }
 
-        function newDream() {
-            editingCard = null;
-            document.getElementById('dream-title').value = '';
-            document.getElementById('dream-text').value = '';
-            navigate('record');
+        async function getDreams() {
+            const localToken = localStorage.getItem('authToken');
+            const $dreams = document.getElementById('dreams');
+            if (!$dreams) { return; }
+
+            if (!localToken) {
+                $dreams.innerHTML = '<div>Авторизуйтесь, чтобы просматривать сны, записанные на <b>SberBoom</b>...</div>';
+                return;
+            }
+
+            $dreams.innerHTML = '';
+
+            try {
+                const res = await fetch('/api/dream', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localToken
+                    }
+                });
+
+                const dreams = await res.json();
+
+                const options = {
+                    // era      : 'long',
+                    year     : 'numeric',
+                    month    : 'long',
+                    day      : 'numeric',
+                    // weekday  : 'long',
+                    timezone : 'UTC',
+                    hour     : 'numeric',
+                    minute   : 'numeric',
+                    second   : 'numeric'
+                };
+
+                if (res.status === 200 && Array.isArray(dreams) && dreams.length > 0) {
+                    dreams.forEach((dream) => {
+                        const text = dream.text.substr(0, 150),
+                              date = new Date(dream.createdAt);
+                        create('div', {
+                                id : dream.id,
+                                className: 'dream-card',
+                                onclick: function() { navigate('view', { dreamID: dream.id }); }
+                            }, $dreams,
+                            create('h3', { html: date.toLocaleString('ru', options) }),
+                            create('p',  { html: text + (dream.text.length > text.length ? '...' : '') })
+                        );
+                    });
+                } else {
+                    $dreams.innerHTML = 'Снов нет.'
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
         }
 
-        function navigate(pageId, type) {
+        // function newDream() {
+        //     editingCard = null;
+        //     document.getElementById('dream-title').value = '';
+        //     document.getElementById('dream-text').value = '';
+        //     navigate('record');
+        // }
+
+        async function navigate(pageId, p) {
             if (!pageId) { return; }
             const $page = document.getElementById(pageId);
             if (!$page) { return; }
+
+            p = p || {};
+            const type = p.type;
 
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             $page.classList.add('active');
@@ -368,12 +414,17 @@ console.log('[RESPONCE]:', res)
 
             switch (pageId) {
                 case 'main':
-                    updatePlaceholder();
+                    await getDreams();
+                    // updatePlaceholder();
                     break;
 
-                case 'record':
-                    updateRecordDate();
-                    document.getElementById('nav-record').classList.add('active');
+                // case 'record':
+                //     updateRecordDate();
+                //     document.getElementById('nav-record').classList.add('active');
+                //     break;
+
+                case 'view':
+                    await viewDream(p.dreamID);
                     break;
 
                 case 'login':
@@ -386,7 +437,10 @@ console.log('[RESPONCE]:', res)
                         document.getElementById('login-email').readOnly = true;
                         document.getElementById('login-password').parentElement.style.display = 'none';
                         document.getElementById('login-deviceid').parentElement.style.display = 'flex';
+
+                        document.getElementById('submit').innerHTML = 'Сохранить';
                         document.getElementById('logout').style.display = 'block';
+                        document.getElementById('registration').style.display = 'none';
 
                         document.getElementById('login-email').value = localStorage.getItem('email') || '';
                         document.getElementById('login-deviceid').value = localStorage.getItem('deviceID') || '';
@@ -398,7 +452,10 @@ console.log('[RESPONCE]:', res)
                         document.getElementById('login-email').readOnly = false;
                         document.getElementById('login-password').parentElement.style.display = 'flex';
                         document.getElementById('login-deviceid').parentElement.style.display = 'flex';
+
+                        document.getElementById('submit').innerHTML = 'Зарегистрироваться';
                         document.getElementById('logout').style.display = 'none';
+                        document.getElementById('registration').style.display = 'none';
                     } else {
                         $page.setAttribute('route', 'login');
                         $title.innerHTML = 'Войдите';
@@ -406,77 +463,189 @@ console.log('[RESPONCE]:', res)
                         document.getElementById('login-email').readOnly = false;
                         document.getElementById('login-password').parentElement.style.display = 'flex';
                         document.getElementById('login-deviceid').parentElement.style.display = 'none';
+
+                        document.getElementById('submit').innerHTML = 'Войти';
                         document.getElementById('logout').style.display = 'none';
+                        document.getElementById('registration').style.display = 'block';
                     }
                     document.getElementById('login-error').innerHTML = '';
                     break;
             }
         }
 
-        function updateRecordDate() {
-            const dateEl = document.getElementById('dream-date');
-            const today = new Date();
-            dateEl.textContent = `Date: ${today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}`;
-        }
+        // function updateRecordDate() {
+        //     const dateEl = document.getElementById('dream-date');
+        //     const today = new Date();
+        //     dateEl.textContent = `Date: ${today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}`;
+        // }
 
-        function updatePlaceholder() {
-            const placeholder = document.getElementById('no-dreams');
-            placeholder.style.display = document.querySelectorAll('#main .dream-card:not(#no-dreams)').length ? 'none' : 'block';
-        }
+        // function updatePlaceholder() {
+        //     const placeholder = document.getElementById('no-dreams');
+        //     placeholder.style.display = document.querySelectorAll('#main .dream-card:not(#no-dreams)').length ? 'none' : 'block';
+        // }
 
-        function editDream(event) {
-            event.stopPropagation();
-            const card = event.currentTarget.parentElement;
-            editingCard = card;
-            document.getElementById('dream-title').value = card.dataset.title;
-            document.getElementById('dream-text').value = card.dataset.text;
-            document.getElementById('dream-date').textContent = card.dataset.date;
-            navigate('record');
-        }
+        // function editDream(event) {
+        //     event.stopPropagation();
+        //     const card = event.currentTarget.parentElement;
+        //     editingCard = card;
+        //     document.getElementById('dream-title').value = card.dataset.title;
+        //     document.getElementById('dream-text').value = card.dataset.text;
+        //     document.getElementById('dream-date').textContent = card.dataset.date;
+        //     navigate('record');
+        // }
 
-        function viewDream(title, date, text) {
+        async function viewDream(dreamID) {
+            const localToken = localStorage.getItem('authToken');
+            let title = '',
+                text = '';
+
+            if (dreamID) {
+                try {
+                    const res = await fetch('/api/dream/' + dreamID, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localToken
+                        }
+                    });
+
+                    const dream = await res.json();
+
+                    const options = {
+                        year     : 'numeric',
+                        month    : 'long',
+                        day      : 'numeric',
+                        timezone : 'UTC',
+                        hour     : 'numeric',
+                        minute   : 'numeric',
+                        second   : 'numeric'
+                    };
+
+                    if (res.status === 200 && dream) {
+                        title = new Date(dream.createdAt).toLocaleString('ru', options);
+                        text = dream.text;
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                }
+            }
+
             document.getElementById('view-title').textContent = title;
-            document.getElementById('view-date').textContent = date;
             document.getElementById('view-content').textContent = text;
-            navigate('view');
+            // navigate('view');
         }
 
-        function saveDream() {
-            const title = document.getElementById('dream-title').value.trim() || 'Untitled';
-            const text = document.getElementById('dream-text').value.trim();
-            const dateText = document.getElementById('dream-date').textContent.replace('Date: ', '');
-            if (editingCard) { editingCard.remove(); }
+        // function saveDream() {
+        //     const title = document.getElementById('dream-title').value.trim() || 'Untitled';
+        //     const text = document.getElementById('dream-text').value.trim();
+        //     const dateText = document.getElementById('dream-date').textContent.replace('Date: ', '');
+        //     if (editingCard) { editingCard.remove(); }
 
-            const card = document.createElement('div');
-            card.className = 'dream-card';
-            card.dataset.title = title;
-            card.dataset.date = dateText;
-            card.dataset.text = text;
-            card.innerHTML = `
-                <h3>${title}</h3>
-                <p>Date: ${dateText}</p>
-                <p>${text.length > 100 ? text.substring(0, 100) + '...' : text}</p>
-                <button class="edit-btn" onclick="event.stopPropagation(); editDream(event)">
-                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="15" y1="3" x2="21" y2="9" />
-                    </svg>
-                </button>
-                <button class="delete-btn" onclick="event.stopPropagation(); this.parentElement.remove(); updatePlaceholder();">
-                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6l-2 14H7L5 6m5 0V4h4v2" />
-                        <line x1="10" y1="11" x2="10" y2="17" />
-                        <line x1="14" y1="11" x2="14" y2="17" />
-                    </svg>
-                </button>
-            `;
-            card.onclick = () => viewDream(title, dateText, text);
-            document.getElementById('main').appendChild(card);
-            updatePlaceholder();
-            navigate('main');
+        //     const card = document.createElement('div');
+        //     card.className = 'dream-card';
+        //     card.dataset.title = title;
+        //     card.dataset.date = dateText;
+        //     card.dataset.text = text;
+        //     card.innerHTML = `
+        //         <h3>${title}</h3>
+        //         <p>Date: ${dateText}</p>
+        //         <p>${text.length > 100 ? text.substring(0, 100) + '...' : text}</p>
+        //         <button class="edit-btn" onclick="event.stopPropagation(); editDream(event)">
+        //             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        //                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+        //                 <line x1="18" y1="6" x2="6" y2="18" />
+        //                 <line x1="15" y1="3" x2="21" y2="9" />
+        //             </svg>
+        //         </button>
+        //         <button class="delete-btn" onclick="event.stopPropagation(); this.parentElement.remove(); updatePlaceholder();">
+        //             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        //                 <polyline points="3 6 5 6 21 6" />
+        //                 <path d="M19 6l-2 14H7L5 6m5 0V4h4v2" />
+        //                 <line x1="10" y1="11" x2="10" y2="17" />
+        //                 <line x1="14" y1="11" x2="14" y2="17" />
+        //             </svg>
+        //         </button>
+        //     `;
+        //     card.onclick = () => viewDream(title, dateText, text);
+        //     document.getElementById('main').appendChild(card);
+        //     updatePlaceholder();
+        //     navigate('main');
+        // }
+
+        function create(tagName, attributes, appendTo) {
+            var el, templ, child, attr, i, val;
+            if (!tagName) { return null; }
+
+            switch (tagName) {
+                case 'fragment':
+                    el = document.createDocumentFragment();
+                    break;
+
+                case 'html':
+                    if (typeof attributes === 'object' && 'html' in attributes) {
+                        el = document.createDocumentFragment();
+                        templ = document.createElement('template');
+                        templ.innerHTML = attributes.html;
+                        while ((child = templ.firstElementChild)) {
+                            el.appendChild(child);
+                        }
+                    }
+                    break;
+
+                default:
+                    el = document.createElement(tagName);
+
+                    if (typeof attributes === 'object') {
+                        for (attr in attributes) {
+                            // if (!attributes[attr]) { continue; }
+                            switch (attr) {
+                                case 'value':
+                                    el.value = attributes[attr];
+                                    break;
+                                case 'checked':
+                                    if (el.nodeName === 'INPUT' && (attributes['type'] === 'checkbox' || attributes['type'] === 'radio')) {
+                                        el.checked = attributes[attr];
+                                    } else {
+                                        el.setAttribute(attr, attributes[attr]);
+                                    }
+                                    break;
+                                case 'html':
+                                    el.innerHTML = attributes[attr];
+                                    break;
+                                case 'className':
+                                    el.className = attributes[attr];
+                                    break;
+                                case 'style':
+                                    el.style.cssText = attributes[attr];
+                                    break;
+                                case 'onclick':
+                                case 'onchange':
+                                    el[attr] = attributes[attr];
+                                    break;
+                                default:
+                                    el.setAttribute(attr, attributes[attr]);
+                            }
+                        }
+                    }
+            }
+
+            for (i = 3; i < arguments.length; i++) {
+                val = arguments[i];
+                if (!val) { continue; }
+                if (typeof val === 'string') {
+                    val = document.createTextNode(val);
+                }
+
+                el.appendChild(val);
+            }
+
+            if (appendTo) {
+                appendTo.appendChild(el);
+            }
+
+            return el;
         }
+
     </script>
 </body>
 </html>

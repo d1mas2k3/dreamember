@@ -7,7 +7,7 @@ class DreamController {
         const {text, deviceID} = req.body;
         if (!deviceID || !text) {
             return next(ApiError.badRequest('Неправильно задан текст и/или серийный номер колонки!'))
-        } 
+        }
         const user = await userController.getByDeviceID(deviceID);
         if (!user) {
             return next(ApiError.badRequest('Колонка не еще привязана к пользователю!'));
@@ -17,7 +17,7 @@ class DreamController {
     }
 
     async getAll(req, res, next) {
-        if (!req.user || !!req.user.deviceID) {
+        if (!req.user || !req.user.deviceID) {
             return next(ApiError.forbidden('Вы не авторизованы или не привязана колонка!'));
         }
         const dreams = await Dream.findAll({ where: { deviceID: req.user.deviceID } });
@@ -29,7 +29,7 @@ class DreamController {
         const dream = await Dream.findOne({ where: {id} })
         return res.json(dream);
     }
-   
+
 }
 
 module.exports = new DreamController();
