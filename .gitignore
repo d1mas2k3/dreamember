@@ -1,7 +1,4 @@
 node_modules/
 dist/
 .log
-<<<<<<< HEAD
 .env
-=======
->>>>>>> d7efa478636b0dd14b59bf470dc320add2f87f12
