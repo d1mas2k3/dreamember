@@ -31,7 +31,7 @@
         .auth-buttons > span { display: block; font-size: 20px; padding: 10px 0; font-weight: normal;}
 
         /* Action Buttons */
-        #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
+        /* #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; } */
 
         /* Main */
         main { padding: 32px; }
@@ -90,6 +90,8 @@
 
         /* View Dream Page */
         .view-section { background: #fff; padding: 40px; border-radius: 8px; max-width: 800px; margin: 40px auto; min-height: 200px; }
+        .view-buttons { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+        .view-buttons button { margin-bottom: 16px; padding: 8px 12px 10px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
         #view-title { font-size: 24px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         #view-date { font-size: 16px; color: #757575; margin-bottom: 16px; }
         #view-content { font-size: 18px; color: #333; line-height: 1.5; word-wrap: break-word; overflow-y: auto; max-height: 600px; }
@@ -143,7 +145,10 @@
         <!-- View -->
         <div id="view" class="page">
             <section class="view-section">
-                <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;&nbsp;Назад</button>
+                <div class="view-buttons">
+                    <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;Назад</button>
+                    <button id="delete-btn" class="submit" onclick="deleteDream()">&#10006;&nbsp;Удалить</button>
+                </div>
                 <h3 id="view-title"></h3>
                 <!-- <div id="view-date">12.05.2025</div> -->
                 <p id="view-content"></p>
@@ -221,8 +226,8 @@
                     errors.push('Минимальная длина пароля 8 символов.');
                 }
 
-                if (!data.deviceID) {
-                    errors.push('Введите серийный номер колонки');
+                if (!data.deviceID || !/^(?=.*\d)(?=.*[A-Z]).{10,}$/.test(data.deviceID)) {
+                    errors.push('Введите серийный номер колонки (цифры и заглавные буквы, минимальная длина: 10)');
                 }
             }
             if (errors.length > 0) {
@@ -530,9 +535,32 @@
                 }
             }
 
+            document.getElementById('view').setAttribute('dream-id', dreamID);
             document.getElementById('view-title').textContent = title;
             document.getElementById('view-content').textContent = text;
             // navigate('view');
+        }
+
+        async function deleteDream() {
+            const localToken = localStorage.getItem('authToken');
+            const dreamID = document.getElementById('view').getAttribute('dream-id');
+            if (!dreamID) { return; }
+
+            try {
+                const res = await fetch('/api/dream/' + dreamID, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localToken
+                    }
+                });
+
+                if (res.status === 200) {
+                    navigate('main');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
         }
 
         // function saveDream() {
