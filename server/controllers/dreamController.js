@@ -30,6 +30,18 @@ class DreamController {
         return res.json(dream);
     }
 
+    async delete(req, res) {
+        const {id} = req.params;
+        const dream = await Dream.destroy({ where: { id }});
+        return res.json({ id });
+    }
+
+    // async deleteByDeviceID(deviceID) {
+    //     if (!deviceID) { return; }
+
+    //     await Dream.destroy({ where: { deviceID } });
+    // }
+
 }
 
 module.exports = new DreamController();

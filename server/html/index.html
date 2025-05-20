@@ -31,7 +31,7 @@
         .auth-buttons > span { display: block; font-size: 20px; padding: 10px 0; font-weight: normal;}
 
         /* Action Buttons */
-        #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
+        /* #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; } */
 
         /* Main */
         main { padding: 32px; }
@@ -81,8 +81,13 @@
         .title-block .subtitle { font-size: 24px; font-weight: 400; color: #444; }
         .login-content label { display: flex; flex-direction: column; gap: 8px; }
         .login-content input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        .login-content button.submit { padding: 12px; background: #2C2C2C; color: #fff; border: none; border-radius: 4px; font-size: 16px; min-width: 120px;}
-        .login-buttons { display: flex; gap: 8px; margin-left: auto; }
+        .login-content button.submit { padding: 12px; background: #2C2C2C; color: #fff; border: none; border-radius: 4px; font-size: 16px; }
+        /* .login-buttons { display: flex; gap: 8px; margin-left: auto; } */
+        .login-buttons { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+        .login-buttons > div { display: flex; gap: 8px; }
+        .login-buttons > div:last-child { display: flex; gap: 8px; margin-left: auto;}
+        .login-content button.submit:hover { color: yellow; }
+        #user-delete { background-color: #999;  }
         .error { color: red; font-size: 96%; }
 
         button.system-close { position: absolute; top: 4px; right: 4px; border: none; font-size: 32px; padding: 0 10px 6px 10px; line-height: 28px;}
@@ -90,6 +95,8 @@
 
         /* View Dream Page */
         .view-section { background: #fff; padding: 40px; border-radius: 8px; max-width: 800px; margin: 40px auto; min-height: 200px; }
+        .view-buttons { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+        .view-buttons button { margin-bottom: 16px; padding: 8px 12px 10px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
         #view-title { font-size: 24px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         #view-date { font-size: 16px; color: #757575; margin-bottom: 16px; }
         #view-content { font-size: 18px; color: #333; line-height: 1.5; word-wrap: break-word; overflow-y: auto; max-height: 600px; }
@@ -101,7 +108,7 @@
             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 22 22">
                 <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"></path>
             </svg>
-            <span class="main-title">dremember</span>
+            <span class="main-title">dreamember</span>
         </button>
         <!-- <nav class="nav-links">
             <button id="nav-record" onclick="newDream()">Record dream</button>
@@ -143,7 +150,10 @@
         <!-- View -->
         <div id="view" class="page">
             <section class="view-section">
-                <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;&nbsp;Назад</button>
+                <div class="view-buttons">
+                    <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;Назад</button>
+                    <button id="delete-btn" class="submit" onclick="deleteDream()">&#10006;&nbsp;Удалить</button>
+                </div>
                 <h3 id="view-title"></h3>
                 <!-- <div id="view-date">12.05.2025</div> -->
                 <p id="view-content"></p>
@@ -161,8 +171,8 @@
                 </div>
                 <div id="login-error" class="error"></div>
                 <label>
-                    <span>Email</span>
-                    <input id="login-email" type="text" placeholder="Введите email" />
+                    <span>Логин</span>
+                    <input id="login-name" type="text" placeholder="Введите логин" />
                 </label>
                 <label>
                     <span>Пароль</span>
@@ -170,12 +180,17 @@
                 </label>
                 <label>
                     <span>Серийный номер колонки</span>
-                    <input id="login-deviceid" type="text" placeholder="Введите серийный номер колонки" maxlength="16" pattern=".{16}" title="Must be exactly 16 characters" />
+                    <input id="login-deviceid" type="text" placeholder="Введите серийный номер колонки" />
                 </label>
                 <div class="login-buttons">
-                    <button id="submit" class="submit" onclick="login()">Войти</button>
-                    <button id="registration" class="submit" onclick="navigate('login', { type: 'registration' })">Регистрация</button>
-                    <button id="logout" class="submit" onclick="clearAuth();navigate('main');">Выйти</button>
+                    <div>
+                        <button id="user-delete" class="submit" onclick="deleteUser()">Удалить</button>
+                    </div>
+                    <div>
+                        <button id="submit" class="submit" onclick="login()">Войти</button>
+                        <button id="registration" class="submit" onclick="navigate('login', { type: 'registration' })">Регистрация</button>
+                        <button id="logout" class="submit" onclick="clearAuth();navigate('main');">Выйти</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,7 +207,7 @@
         async function login() {
             const route = document.getElementById('login')?.getAttribute('route') ?? 'login';
             const data = {
-                email    : document.getElementById('login-email').value,
+                login    : document.getElementById('login-name').value,
                 deviceID : document.getElementById('login-deviceid').value,
             };
             const errors = [];
@@ -209,8 +224,8 @@
             }
 
             // Validation
-            if (!data.email || !/^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/.test(data.email)) {
-                errors.push('Введите email в правильном формате.');
+            if (!data.login || !/^[a-z0-9_\-@.]{3,}$/i.test(data.login)) {
+                errors.push('Минимальная длина логина 3 символа.');
             }
             if (route === 'registration') {
                 // if (!data.password || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(data.password)) {
@@ -221,8 +236,8 @@
                     errors.push('Минимальная длина пароля 8 символов.');
                 }
 
-                if (!data.deviceID) {
-                    errors.push('Введите серийный номер колонки');
+                if (!data.deviceID || !/^[a-z0-9_\-]{10,}$/i.test(data.deviceID)) {
+                    errors.push('Введите серийный номер колонки (цифры и латинские буквы, минимальная длина: 10)');
                 }
             }
             if (errors.length > 0) {
@@ -247,7 +262,7 @@
                 if (res.status === 200) {
                     console.log(json);
                     if (json.token) {
-                        localStorage.setItem('email', data.email);
+                        localStorage.setItem('login', data.login);
                         localStorage.setItem('deviceID', json.deviceID);
                         localStorage.setItem('authToken', json.token);
                         await checkAuth(json.token);
@@ -315,14 +330,45 @@
                 const $authName = document.getElementById('auth-name');
                 if ($authName) {
                     $authName.style.display = 'block';
-                    $authName.innerHTML = localStorage.getItem('email') || '(none)';
+                    $authName.innerHTML = localStorage.getItem('login') || '(none)';
                 }
                 document.getElementById('sign-in').style.display = 'none';
             }
         }
 
+        async function deleteUser() {
+            const login = localStorage.getItem('login');
+            const localToken = localStorage.getItem('authToken');
+            const deviceID = localStorage.getItem('deviceID');
+
+            if (!login || !localToken) {
+                alert ("Ошибка удаления!");
+                return;
+            }
+
+            if (confirm("Удалить текущий аккаунт пользователя?\nБудут удалены также все сны текущего пользователя.")) {
+                try {
+                    const res = await fetch('/api/user/delete', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + localToken
+                        },
+                        body: JSON.stringify({ login, deviceID })
+                    });
+                    console.log(res.status)
+                    if (res.status === 200) {
+                        clearAuth();
+						navigate('main');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                }
+            }
+        }
+
         function clearAuth() {
-            localStorage.removeItem('email');
+            localStorage.removeItem('login');
             localStorage.removeItem('deviceID');
             localStorage.removeItem('authToken');
 
@@ -333,7 +379,7 @@
             }
             document.getElementById('sign-in').style.display = 'block';
 
-            document.getElementById('login-email').value = '';
+            document.getElementById('login-name').value = '';
             document.getElementById('login-deviceid').value = '';
         }
 
@@ -434,39 +480,42 @@
                         $page.setAttribute('route', 'profile');
                         $title.innerHTML = 'Профиль';
                         $subTitle.style.display = 'none';
-                        document.getElementById('login-email').readOnly = true;
+                        document.getElementById('login-name').readOnly = true;
                         document.getElementById('login-password').parentElement.style.display = 'none';
                         document.getElementById('login-deviceid').parentElement.style.display = 'flex';
 
                         document.getElementById('submit').innerHTML = 'Сохранить';
                         document.getElementById('logout').style.display = 'block';
                         document.getElementById('registration').style.display = 'none';
+                        document.getElementById('user-delete').style.display = 'block';
 
-                        document.getElementById('login-email').value = localStorage.getItem('email') || '';
+                        document.getElementById('login-name').value = localStorage.getItem('login') || '';
                         document.getElementById('login-deviceid').value = localStorage.getItem('deviceID') || '';
 
                     } else if (type === 'registration') {
                         $page.setAttribute('route', 'registration');
                         $title.innerHTML = 'Регистрация';
                         $subTitle.style.display = 'none';
-                        document.getElementById('login-email').readOnly = false;
+                        document.getElementById('login-name').readOnly = false;
                         document.getElementById('login-password').parentElement.style.display = 'flex';
                         document.getElementById('login-deviceid').parentElement.style.display = 'flex';
 
                         document.getElementById('submit').innerHTML = 'Зарегистрироваться';
                         document.getElementById('logout').style.display = 'none';
                         document.getElementById('registration').style.display = 'none';
+                        document.getElementById('user-delete').style.display = 'none';
                     } else {
                         $page.setAttribute('route', 'login');
                         $title.innerHTML = 'Войдите';
                         $subTitle.style.display = 'block';
-                        document.getElementById('login-email').readOnly = false;
+                        document.getElementById('login-name').readOnly = false;
                         document.getElementById('login-password').parentElement.style.display = 'flex';
                         document.getElementById('login-deviceid').parentElement.style.display = 'none';
 
                         document.getElementById('submit').innerHTML = 'Войти';
                         document.getElementById('logout').style.display = 'none';
                         document.getElementById('registration').style.display = 'block';
+                        document.getElementById('user-delete').style.display = 'none';
                     }
                     document.getElementById('login-error').innerHTML = '';
                     break;
@@ -530,9 +579,32 @@
                 }
             }
 
+            document.getElementById('view').setAttribute('dream-id', dreamID);
             document.getElementById('view-title').textContent = title;
             document.getElementById('view-content').textContent = text;
             // navigate('view');
+        }
+
+        async function deleteDream() {
+            const localToken = localStorage.getItem('authToken');
+            const dreamID = document.getElementById('view').getAttribute('dream-id');
+            if (!dreamID) { return; }
+
+            try {
+                const res = await fetch('/api/dream/' + dreamID, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localToken
+                    }
+                });
+
+                if (res.status === 200) {
+                    navigate('main');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
         }
 
         // function saveDream() {

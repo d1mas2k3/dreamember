@@ -1,35 +1,35 @@
-const { User } = require("../models/models");
+const { User, Dream } = require('../models/models');
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sequelize  = require("../db");
+const sequelize  = require('../db');
+// const dreamController = require('../controllers/dreamController');
 
-const generateJwt = (id, email, deviceID) => {
-    // return jwt.sign({ id, email, deviceID }, process.env.SECRET_KEY, { expiresIn: '180' });
-    return jwt.sign({ id, email, deviceID }, process.env.SECRET_KEY, { expiresIn: '24h' });
+const generateJwt = (id, login, deviceID) => {
+    // return jwt.sign({ id, login, deviceID }, process.env.SECRET_KEY, { expiresIn: '180' });
+    return jwt.sign({ id, login, deviceID }, process.env.SECRET_KEY, { expiresIn: '24h' });
 }
 
 class UserController {
     async registration(req, res, next) {
         console.log('[REGISTRATION]');
 
-        const { email, password, deviceID } = req.body;
+        const { login, password, deviceID } = req.body;
 
-        // console.log('[REQUEST.BODY]:', req.body);
-        console.log('[REQUEST.BODY]:', email, password, deviceID);
+        // console.log('[REQUEST.BODY]:', login, password, deviceID);
 
-        if (!email || !password || !deviceID) {
+        if (!login || !password || !deviceID) {
             return next(ApiError.badRequest('Некорректные данные регистрации'));
         }
         try {
             const result = await sequelize.transaction(async (t) => {
-                const candidate = await User.findOne({ where: {email}, transaction: t });
+                const candidate = await User.findOne({ where: {login}, transaction: t });
                 if (candidate) {
-                    throw ApiError.badRequest('Пользователь с таким email уже существует!');
+                    throw ApiError.badRequest('Пользователь с таким login уже существует!');
                 }
                 const hashPassword = await bcrypt.hash(password, 5);
-                const user = await User.create({ email, password: hashPassword, deviceID }, { transaction: t });
-                const token = generateJwt(user.id, user.email, user.deviceID);
+                const user = await User.create({ login, password: hashPassword, deviceID }, { transaction: t });
+                const token = generateJwt(user.id, user.login, user.deviceID);
 
                 return res.json({ token, deviceID: user.deviceID });
             });
@@ -39,46 +39,68 @@ class UserController {
     }
 
     async login(req, res, next) {
-        const {email, password} = req.body;
-        const user = await User.findOne({ where: {email} });
+        const {login, password} = req.body;
+        const user = await User.findOne({ where: {login} });
         if (!user) {
-            return next(ApiError.internal('Пользователь с таким email не найден!'));
+            return next(ApiError.internal('Пользователь с таким login не найден!'));
         }
         let comparePassword = bcrypt.compareSync(password, user.password);
         if (!comparePassword) {
             return next(ApiError.internal('Не верный пароль!'));
         }
-        const token = generateJwt(user.id, user.email, user.deviceID);
+        const token = generateJwt(user.id, user.login, user.deviceID);
         return res.json({ token,  deviceID: user.deviceID });
     }
 
     async update(req, res, next) {
-        const { email, deviceID } = req.body;
-        if (!email || !deviceID) {
+        const { login, deviceID } = req.body;
+        if (!login || !deviceID) {
             return next(ApiError.internal('Ошибка обновления данных!'));
         }
 
-        const user = await User.findOne({ where: { email} });
+        const user = await User.findOne({ where: { login } });
         if (!user) {
-            return next(ApiError.internal('Пользователь с таким email не найден!'));
+            return next(ApiError.internal('Пользователь с таким login не найден!'));
         }
 
         user.deviceID = deviceID;
         try {
             await user.save();
-            const token = generateJwt(user.id, user.email, user.deviceID);
+            const token = generateJwt(user.id, user.login, user.deviceID);
             return res.json({ token, deviceID: user.deviceID });
         } catch (error) {
             if (error.name === 'SequelizeUniqueConstraintError') {
-                next(ApiError.internal(`Ошибка обновления: серийный номер колонки "${deviceID}" уже введен другим пользователем!`));
+                return next(ApiError.internal(`Ошибка обновления: серийный номер колонки "${deviceID}" уже введен другим пользователем!`));
             } else {
-                next(ApiError.internal('Ошибка обновления: ' + error.message));
+                return next(ApiError.internal('Ошибка обновления: ' + error.message));
             }
         }
     }
 
+    async delete(req, res, next) {
+        const { login, deviceID } = req.body;
+        if (!login || !deviceID) {
+            return next(ApiError.internal('Ошибка удаления данных!'));
+        }
+
+        const user = await User.findOne({ where: { login } });
+        if (!user) {
+            return next(ApiError.internal('Пользователь с таким login не найден!'));
+        }
+
+        try {
+            await User.destroy({ where: { login } });
+            await Dream.destroy({ where: { deviceID } });
+            // await dreamController.deleteByDeviceID(deviceID);
+        } catch (error) {
+            return next(ApiError.internal('Ошибка удаления: ' + error.message));
+        }
+
+		return res.status(200).json({});
+    }
+
     async check(req, res) {
-        const token = generateJwt(req.user.id, req.user.email, req.user.deviceID);
+        const token = generateJwt(req.user.id, req.user.login, req.user.deviceID);
         return res.json({ token, deviceID: req.user.deviceID });
     }
 
