@@ -1,137 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dreamember</title>
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M21%2012.79A9%209%200%201112.21%203%20a7%207%200%200097.79%209.79z'%20fill='none'%20stroke='%232C2C2C'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E" />
-    <style>
-        /* Reset & Base */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-        button { cursor: pointer; }
-        p { margin-bottom: 4px; }
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dreamember</title>
+	<!-- Favicon -->
+	<link rel="icon" type="image/svg+xml"
+		href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M21%2012.79A9%209%200%201112.21%203%20a7%207%200%200097.79%209.79z'%20fill='none'%20stroke='%232C2C2C'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E" />
+	<style>
+		/* Reset & Base */
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
 
-        .link { cursor: pointer; font-weight: bold; }
-        .link:hover { text-decoration: underline; }
+		body {
+			font-family: Arial, sans-serif;
+			background: #f5f5f5;
+		}
 
-        /* Header */
-        header { background: #fff; border-bottom: 1px solid #ccc; padding: 10px 16px; display: flex; align-items: center; }
-        .main-title { font-size: 32px; font-weight: 700; color: #2C2C2C; margin-left: 14px;}
-        .moon-button { background: transparent; border: none; padding: 8px; }
-        .moon-button svg { width: 24px; height: 24px; stroke: #2C2C2C; }
-        .nav-links { display: flex; gap: 12px; margin-left: 12px; }
-        .nav-links button { background: transparent; border: none; padding: 8px 12px; border-radius: 4px; font-size: 16px; }
-        .nav-links button.active, .nav-links button:hover { background: #eee; }
-        .auth-buttons { display: flex; gap: 8px; margin-left: auto; }
-        .auth-buttons button { padding: 8px 12px; border-radius: 4px; font-size: 16px; border: 1px solid #2C2C2C; }
-        .auth-buttons .sign-in { background: #e3e3e3; color: #000; }
-        .auth-buttons .register { background: #2C2C2C; color: #fff; }
-        .auth-buttons > span { display: block; font-size: 20px; padding: 10px 0; font-weight: normal;}
+		@media (max-width: 600px) {
+			.need-hide {
+				display: none;
+			}
+		}
 
-        /* Action Buttons */
-        /* #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; } */
+		button {
+			cursor: pointer;
+		}
 
-        /* Main */
-        main { padding: 32px; }
-        .page { display: none; }
-        .page.active { display: block; }
+		p {
+			margin-bottom: 4px;
+		}
 
-        /* Dream Cards */
-        .dream-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 24px; margin-bottom: 16px; position: relative; cursor: pointer; }
-        .dream-card h3 { font-size: 20px; margin-bottom: 8px; color: #1E1E1E; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .dream-card p { color: #666; }
-        .dream-card .edit-btn,
-        .dream-card .delete-btn {
-            position: absolute;
-            top: 8px;
-            background: transparent;
-            border: none;
-            padding: 4px;
-            cursor: pointer;
-        }
-        .dream-card .delete-btn { right: 8px; }
-        .dream-card .edit-btn { right: 36px; }
-        .dream-card .edit-btn svg,
-        .dream-card .delete-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: #888;
-            fill: none;
-        }
+		.link {
+			cursor: pointer;
+			font-weight: bold;
+		}
 
-        /* Intro */
-        .intro h2 { font-size: 24px; margin-bottom: 8px; }
-        .intro p { font-size: 18px; color: #555; margin-bottom: 24px; }
+		.link:hover {
+			text-decoration: underline;
+		}
 
-        /* Record Page */
-        .record-section { background: #fff; padding: 64px; display: flex; flex-direction: column; gap: 24px; min-height: 650px; border-radius: 8px; }
-        .record-header input { font-size: 24px; font-weight: 600; border: none; outline: none; color: #1E1E1E; }
-        .record-header .date { font-size: 20px; color: #757575; }
-        .record-body textarea { width: 100%; min-height: 434px; padding: 24px; font-size: 20px; border: 1px solid #D9D9D9; border-radius: 8px; color: #1E1E1E; resize: none; }
-        .record-body button { width: 120px; padding: 12px; border: none; border-radius: 4px; background: #2C2C2C; color: #fff; font-size: 16px; align-self: flex-end; }
+		/* Header */
+		header {
+			background: #fff;
+			border-bottom: 1px solid #ccc;
+			padding: 10px 16px;
+			display: flex;
+			align-items: center;
+		}
 
-        /* Sleep & Analysis Pages */
-        .sleep-page, .analysis-page { background: #fff; padding: 24px; border-radius: 8px; max-width: 600px; margin: 0 auto; }
+		.main-title {
+			font-size: 32px;
+			font-weight: 700;
+			color: #2C2C2C;
+			margin-left: 14px;
+		}
 
-        /* Login Page */
-        .login-content { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 24px; max-width: 400px; margin: 40px auto; display: flex; flex-direction: column; gap: 14px;  position: relative; }
-        .title-block .title { font-size: 54px; font-weight: 700; color: #2C2C2C; }
-        .title-block .subtitle { font-size: 24px; font-weight: 400; color: #444; }
-        .login-content label { display: flex; flex-direction: column; gap: 8px; }
-        .login-content input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        .login-content button.submit { padding: 12px; background: #2C2C2C; color: #fff; border: none; border-radius: 4px; font-size: 16px; }
-        /* .login-buttons { display: flex; gap: 8px; margin-left: auto; } */
-        .login-buttons { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
-        .login-buttons > div { display: flex; gap: 8px; }
-        .login-buttons > div:last-child { display: flex; gap: 8px; margin-left: auto;}
-        .login-content button.submit:hover { color: yellow; }
-        #user-delete { background-color: #999;  }
-        .error { color: red; font-size: 96%; }
+		.moon-button {
+			background: transparent;
+			border: none;
+			padding: 4px 8px 8px 8px;
+			white-space: nowrap;
+		}
 
-        button.system-close { position: absolute; top: 4px; right: 4px; border: none; font-size: 32px; padding: 0 10px 6px 10px; line-height: 28px;}
+		.moon-button svg {
+			width: 24px;
+			height: 24px;
+			stroke: #2C2C2C;
+		}
+
+		.nav-links {
+			display: flex;
+			gap: 12px;
+			margin-left: 12px;
+		}
+
+		.nav-links button {
+			background: transparent;
+			border: none;
+			padding: 8px 12px;
+			border-radius: 4px;
+			font-size: 16px;
+		}
+
+		.nav-links button.active,
+		.nav-links button:hover {
+			background: #eee;
+		}
+
+		.auth-buttons {
+			display: flex;
+			gap: 8px;
+			margin-left: auto;
+			align-items: center;
+		}
+
+		.auth-buttons button {
+			padding: 8px 12px;
+			border-radius: 4px;
+			font-size: 16px;
+			border: 1px solid #2C2C2C;
+		}
+
+		.auth-buttons .sign-in {
+			background: #e3e3e3;
+			color: #000;
+		}
+
+		.auth-buttons .register {
+			background: #2C2C2C;
+			color: #fff;
+		}
+
+		.auth-buttons>div {
+			display: flex;
+			gap: 8px;
+			margin-left: auto;
+			align-items: center;
+			cursor: pointer;
+		}
+
+		.auth-buttons .auth-name-link {
+			display: block;
+			font-size: 20px;
+			padding: 10px 0;
+			font-weight: normal;
+		}
 
 
-        /* View Dream Page */
-        .view-section { background: #fff; padding: 40px; border-radius: 8px; max-width: 800px; margin: 40px auto; min-height: 200px; }
-        .view-buttons { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
-        .view-buttons button { margin-bottom: 16px; padding: 8px 12px 10px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; }
-        #view-title { font-size: 24px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        #view-date { font-size: 16px; color: #757575; margin-bottom: 16px; }
-        #view-content { font-size: 18px; color: #333; line-height: 1.5; word-wrap: break-word; overflow-y: auto; max-height: 600px; }
-    </style>
+		/* Action Buttons */
+		/* #back-btn { margin-bottom: 16px; padding: 8px 12px; border: none; background: #2C2C2C; color: #fff; border-radius: 4px; font-size: 16px; } */
+
+		/* Main */
+		main {
+			padding: 32px;
+		}
+
+		.page {
+			display: none;
+		}
+
+		.page.active {
+			display: block;
+		}
+
+		/* Dream Cards */
+		.dream-card {
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 24px;
+			margin-bottom: 16px;
+			position: relative;
+			cursor: pointer;
+		}
+
+		.dream-card h3 {
+			font-size: 20px;
+			margin-bottom: 8px;
+			color: #1E1E1E;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.dream-card p {
+			color: #666;
+		}
+
+		.dream-card .edit-btn,
+		.dream-card .delete-btn {
+			position: absolute;
+			top: 8px;
+			background: transparent;
+			border: none;
+			padding: 4px;
+			cursor: pointer;
+		}
+
+		.dream-card .delete-btn {
+			right: 8px;
+		}
+
+		.dream-card .edit-btn {
+			right: 36px;
+		}
+
+		.dream-card .edit-btn svg,
+		.dream-card .delete-btn svg {
+			width: 20px;
+			height: 20px;
+			stroke: #888;
+			fill: none;
+		}
+
+		/* Intro */
+		.intro h2 {
+			font-size: 24px;
+			margin-bottom: 8px;
+		}
+
+		.intro p {
+			font-size: 18px;
+			color: #555;
+			margin-bottom: 24px;
+		}
+
+		/* Record Page */
+		.record-section {
+			background: #fff;
+			padding: 64px;
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+			min-height: 650px;
+			border-radius: 8px;
+		}
+
+		.record-header input {
+			font-size: 24px;
+			font-weight: 600;
+			border: none;
+			outline: none;
+			color: #1E1E1E;
+		}
+
+		.record-header .date {
+			font-size: 20px;
+			color: #757575;
+		}
+
+		.record-body textarea {
+			width: 100%;
+			min-height: 434px;
+			padding: 24px;
+			font-size: 20px;
+			border: 1px solid #D9D9D9;
+			border-radius: 8px;
+			color: #1E1E1E;
+			resize: none;
+		}
+
+		.record-body button {
+			width: 120px;
+			padding: 12px;
+			border: none;
+			border-radius: 4px;
+			background: #2C2C2C;
+			color: #fff;
+			font-size: 16px;
+			align-self: flex-end;
+		}
+
+		/* Sleep & Analysis Pages */
+		.sleep-page,
+		.analysis-page {
+			background: #fff;
+			padding: 24px;
+			border-radius: 8px;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		/* Login Page */
+		.login-content {
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 24px;
+			max-width: 400px;
+			margin: 40px auto;
+			display: flex;
+			flex-direction: column;
+			gap: 14px;
+			position: relative;
+		}
+
+		.title-block .title {
+			font-size: 48px;
+			font-weight: 700;
+			color: #2C2C2C;
+		}
+
+		.title-block .subtitle {
+			font-size: 24px;
+			font-weight: 400;
+			color: #444;
+		}
+
+		.login-content label {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.login-content input {
+			padding: 12px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			font-size: 16px;
+		}
+
+		.login-content button.submit {
+			padding: 12px;
+			background: #2C2C2C;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			font-size: 16px;
+		}
+
+		/* .login-buttons { display: flex; gap: 8px; margin-left: auto; } */
+		.login-buttons {
+			display: flex;
+			gap: 8px;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.login-buttons>div {
+			display: flex;
+			gap: 8px;
+		}
+
+		.login-buttons>div:last-child {
+			display: flex;
+			gap: 8px;
+			margin-left: auto;
+		}
+
+		.login-content button.submit:hover {
+			color: yellow;
+		}
+
+		#user-delete {
+			background-color: #999;
+		}
+
+		.error {
+			color: red;
+			font-size: 96%;
+		}
+
+		button.system-close {
+			position: absolute;
+			top: 4px;
+			right: 4px;
+			border: none;
+			font-size: 32px;
+			padding: 0 10px 6px 10px;
+			line-height: 28px;
+		}
+
+
+		/* View Dream Page */
+		.view-section {
+			background: #fff;
+			padding: 40px;
+			border-radius: 8px;
+			max-width: 800px;
+			margin: 40px auto;
+			min-height: 200px;
+		}
+
+		.view-buttons {
+			display: flex;
+			gap: 8px;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.view-buttons button {
+			margin-bottom: 16px;
+			padding: 8px 12px 10px 12px;
+			border: none;
+			background: #2C2C2C;
+			color: #fff;
+			border-radius: 4px;
+			font-size: 16px;
+		}
+
+		#view-title {
+			font-size: 24px;
+			margin-bottom: 8px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		#view-date {
+			font-size: 16px;
+			color: #757575;
+			margin-bottom: 16px;
+		}
+
+		#view-content {
+			font-size: 18px;
+			color: #333;
+			line-height: 1.5;
+			word-wrap: break-word;
+			overflow-y: auto;
+			max-height: 600px;
+		}
+
+		.small {
+			font-size: 96%;
+		}
+	</style>
 </head>
+
 <body>
-    <header>
-        <button class="moon-button" aria-label="Home" onclick="navigate('main')">
-            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 22 22">
-                <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"></path>
-            </svg>
-            <span class="main-title">dreamember</span>
-        </button>
-        <!-- <nav class="nav-links">
+	<header>
+		<button class="moon-button" aria-label="Home" onclick="navigate('main')">
+			<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 22 22">
+				<path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"></path>
+			</svg>
+			<span class="main-title">dreamember</span>
+		</button>
+		<!-- <nav class="nav-links">
             <button id="nav-record" onclick="newDream()">Record dream</button>
         </nav> -->
-        <div class="auth-buttons">
-            <span id="auth-name" class="link" onclick="navigate('login', { type: 'profile' })"></span>
-            <button id="sign-in" class="sign-in" onclick="navigate('login')">Войти</button>
-            <!-- <button class="register" onclick="navigate('login')">Register</button> -->
-        </div>
-    </header>
-    <main>
-        <!-- Home -->
-        <div id="main" class="page active">
-            <section class="intro">
-                <h2>Последние сны</h2>
-                <p>Как тебе спалось сегодня?</p>
-            </section>
-            <section id="dreams"></div>
-            </section>
-        </div>
+		<div class="auth-buttons">
+			<div>
+				<div class="need-hide">
+					<span id="auth-name" class="auth-name-link" onclick="navigate('login', { type: 'profile' })">
+					</span>
+				</div>
+				<svg fill="#2C2C2C" width="32px" height="32px" viewBox="-1 0 19 19" xmlns="http://www.w3.org/2000/svg"
+					class="cf-icon-svg" onclick="navigate('login', { type: 'profile' })">
+					<path
+						d="M16.417 9.583A7.917 7.917 0 1 1 8.5 1.666a7.917 7.917 0 0 1 7.917 7.917zm-6.24-.064H6.81a2.528 2.528 0 0 0-2.692 2.303v1.51a.794.794 0 0 0 .792.792h7.166a.794.794 0 0 0 .792-.791V11.82a2.528 2.528 0 0 0-2.692-2.302zM6.14 6.374a2.353 2.353 0 1 0 2.353-2.353A2.353 2.353 0 0 0 6.14 6.374z" />
+				</svg>
+			</div>
 
-        <!-- Record -->
-        <!-- <div id="record" class="page">
+			<button id="sign-in" class="sign-in" onclick="navigate('login')">Войти</button>
+			<!-- <button class="register" onclick="navigate('login')">Register</button> -->
+		</div>
+	</header>
+	<main>
+		<!-- Home -->
+		<div id="main" class="page active">
+			<section class="intro">
+				<h2>Последние сны</h2>
+				<p>Как тебе спалось сегодня?</p>
+			</section>
+			<section id="dreams">
+		</div>
+		</section>
+		</div>
+
+		<!-- Record -->
+		<!-- <div id="record" class="page">
             <section class="record-section">
                 <div class="record-header">
                     <input id="dream-title" type="text" placeholder="Title" />
@@ -147,577 +470,583 @@
             </section>
         </div> -->
 
-        <!-- View -->
-        <div id="view" class="page">
-            <section class="view-section">
-                <div class="view-buttons">
-                    <button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;Назад</button>
-                    <button id="delete-btn" class="submit" onclick="deleteDream()">&#10006;&nbsp;Удалить</button>
-                </div>
-                <h3 id="view-title"></h3>
-                <!-- <div id="view-date">12.05.2025</div> -->
-                <p id="view-content"></p>
-            </section>
-        </div>
+		<!-- View -->
+		<div id="view" class="page">
+			<section class="view-section">
+				<div class="view-buttons">
+					<button id="back-btn" onclick="navigate('main')">&#9668;&nbsp;Назад</button>
+					<button id="delete-btn" class="submit" onclick="deleteDream()">&#10006;&nbsp;Удалить</button>
+				</div>
+				<h3 id="view-title"></h3>
+				<!-- <div id="view-date">12.05.2025</div> -->
+				<p id="view-content"></p>
+			</section>
+		</div>
 
-        <!-- Login -->
-        <div id="login" class="page">
-            <div class="login-content">
-                <button class="system-close" onclick="navigate('main')">&times;</button>
-                <div class="title-block">
-                    <div class="title">Войдите</div>
-                    <div class="subtitle">или зарегистритуйтесь</div>
-                    <!-- <div class="subtitle">или <span class="link" onclick="navigate('login', { type: 'registration' })">зарегистритуйтесь</span></div> -->
-                </div>
-                <div id="login-error" class="error"></div>
-                <label>
-                    <span>Логин</span>
-                    <input id="login-name" type="text" placeholder="Введите логин" />
-                </label>
-                <label>
-                    <span>Пароль</span>
-                    <input id="login-password" type="password" placeholder="Введите пароль" />
-                </label>
-                <label>
-                    <span>Серийный номер колонки</span>
-                    <input id="login-deviceid" type="text" placeholder="Введите серийный номер колонки" />
-                </label>
-                <div class="login-buttons">
-                    <div>
-                        <button id="user-delete" class="submit" onclick="deleteUser()">Удалить</button>
-                    </div>
-                    <div>
-                        <button id="submit" class="submit" onclick="login()">Войти</button>
-                        <button id="registration" class="submit" onclick="navigate('login', { type: 'registration' })">Регистрация</button>
-                        <button id="logout" class="submit" onclick="clearAuth();navigate('main');">Выйти</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script>
+		<!-- Login -->
+		<div id="login" class="page">
+			<div class="login-content">
+				<button class="system-close" onclick="navigate('main')">&times;</button>
+				<div class="title-block">
+					<div class="title">Войдите</div>
+					<div class="subtitle">или зарегистритуйтесь</div>
+					<!-- <div class="subtitle">или <span class="link" onclick="navigate('login', { type: 'registration' })">зарегистритуйтесь</span></div> -->
+				</div>
+				<div id="login-error" class="error"></div>
+				<label>
+					<span>Логин</span>
+					<input id="login-name" type="text" placeholder="Введите логин" />
+				</label>
+				<label>
+					<span>Пароль</span>
+					<input id="login-password" type="password" placeholder="Введите пароль" />
+				</label>
+				<label>
+					<span>Введите ID устройства</span>
+					<input id="login-deviceid" type="text" placeholder="Введите ID устройства" />
+					<div class="small">Это привяжет ваше устройство к текущему аккаунту.
+						После этого появится возможность записывать сны с помощью вашего устройства и просматривать их
+						здесь.</div>
+				</label>
+				<div class="login-buttons">
+					<div>
+						<button id="user-delete" class="submit" onclick="deleteUser()">Удалить</button>
+					</div>
+					<div>
+						<button id="submit" class="submit" onclick="login()">Войти</button>
+						<button id="registration" class="submit"
+							onclick="navigate('login', { type: 'registration' })">Зарегистрироваться</button>
+						<button id="logout" class="submit" onclick="clearAuth();navigate('main');">Выйти</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script>
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await checkAuth();
-            await getDreams();
-        });
+		document.addEventListener('DOMContentLoaded', async () => {
+			await checkAuth();
+			await getDreams();
+		});
 
-        let editingCard = null;
+		let editingCard = null;
 
-        async function login() {
-            const route = document.getElementById('login')?.getAttribute('route') ?? 'login';
-            const data = {
-                login    : document.getElementById('login-name').value,
-                deviceID : document.getElementById('login-deviceid').value,
-            };
-            const errors = [];
+		async function login() {
+			const route = document.getElementById('login')?.getAttribute('route') ?? 'login';
+			const data = {
+				login: document.getElementById('login-name').value,
+				deviceID: document.getElementById('login-deviceid').value,
+			};
+			const errors = [];
 
-            const localToken = localStorage.getItem('authToken');
-            if (route === 'profile' && !localToken) {
-                clearAuth();
-                return;
-            }
+			const localToken = localStorage.getItem('authToken');
+			if (route === 'profile' && !localToken) {
+				clearAuth();
+				return;
+			}
 
-            if (route !== 'profile') {
-                data.password = document.getElementById('login-password').value;
-                document.getElementById('login-password').value = '';
-            }
+			if (route !== 'profile') {
+				data.password = document.getElementById('login-password').value;
+				document.getElementById('login-password').value = '';
+			}
 
-            // Validation
-            if (!data.login || !/^[a-z0-9_\-@.]{3,}$/i.test(data.login)) {
-                errors.push('Минимальная длина логина 3 символа.');
-            }
-            if (route === 'registration') {
-                // if (!data.password || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(data.password)) {
-                //     errors.push('Пароль должен содержать цифры, строчные и заглавные буквы, спецсимволы. Минимальная длина: 8 символов.');
-                // }
+			// Validation
+			if (!data.login || !/^[a-z0-9_\-@.]{3,}$/i.test(data.login)) {
+				errors.push('Минимальная длина логина 3 символа.');
+			}
+			if (route === 'registration') {
+				// if (!data.password || !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(data.password)) {
+				//     errors.push('Пароль должен содержать цифры, строчные и заглавные буквы, спецсимволы. Минимальная длина: 8 символов.');
+				// }
 
-                if (!data.password || !/^.{8,}$/.test(data.password)) {
-                    errors.push('Минимальная длина пароля 8 символов.');
-                }
+				if (!data.password || !/^.{8,}$/.test(data.password)) {
+					errors.push('Минимальная длина пароля 8 символов.');
+				}
 
-                if (!data.deviceID || !/^[a-z0-9_\-]{10,}$/i.test(data.deviceID)) {
-                    errors.push('Введите серийный номер колонки (цифры и латинские буквы, минимальная длина: 10)');
-                }
-            }
-            if (errors.length > 0) {
-                showErrors();
-                return;
-            }
+				if (!data.deviceID || !/^[a-z0-9_\-]{10,}$/i.test(data.deviceID)) {
+					errors.push('Введите серийный номер колонки (цифры и латинские буквы, минимальная длина: 10)');
+				}
+			}
+			if (errors.length > 0) {
+				showErrors();
+				return;
+			}
 
-            try {
-                const headers = { 'Content-Type': 'application/json' };
-                if (route === 'profile') {
-                    headers.Authorization = 'Bearer ' + localToken;
-                }
+			try {
+				const headers = { 'Content-Type': 'application/json' };
+				if (route === 'profile') {
+					headers.Authorization = 'Bearer ' + localToken;
+				}
 
-                const res = await fetch('/api/user/' + route, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(data)
-                })
+				const res = await fetch('/api/user/' + route, {
+					method: 'POST',
+					headers,
+					body: JSON.stringify(data)
+				});
 
-                const json = await res.json();
+				const json = await res.json();
 
-                if (res.status === 200) {
-                    console.log(json);
-                    if (json.token) {
-                        localStorage.setItem('login', data.login);
-                        localStorage.setItem('deviceID', json.deviceID);
-                        localStorage.setItem('authToken', json.token);
-                        await checkAuth(json.token);
-                        navigate('main');
-                    }
-                } else if (res.status === 401) {
-                    clearAuth();
-                    navigate('login');
-                } else if (json.message) {
-                    errors.push(json.message);
-                    showErrors();
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-
-                errors.push('Непредвиденная ошибка');
-                showErrors();
-            }
-
-            function showErrors() {
-                console.log('errors:', errors)
-                if (errors.length === 0) { return; }
-
-                const $error = document.getElementById('login-error');
-                if ($error) {
-                    $error.innerHTML = '<p>' + errors.join('</p><p>') + '</p>';
-                }
-            }
-        }
-
-        async function checkAuth(token) {
-            const localToken = localStorage.getItem('authToken');
-
-            if (localToken) {
-                if (token && token === localToken) {
-                    setAuth();
-                    return;
-                }
-
-                try {
-                    const res = await fetch('/api/user/auth', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: 'Bearer ' + localToken
-                        }
-                    });
-
-                    const json = await res.json();
-
-                    if (res.status && json.token) {
-                        setAuth();
-                    } else {
-                        clearAuth();
-                    }
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                    clearAuth();
-                }
-            } else {
-                clearAuth();
-            }
-
-            function setAuth() {
-                const $authName = document.getElementById('auth-name');
-                if ($authName) {
-                    $authName.style.display = 'block';
-                    $authName.innerHTML = localStorage.getItem('login') || '(none)';
-                }
-                document.getElementById('sign-in').style.display = 'none';
-            }
-        }
-
-        async function deleteUser() {
-            const login = localStorage.getItem('login');
-            const localToken = localStorage.getItem('authToken');
-            const deviceID = localStorage.getItem('deviceID');
-
-            if (!login || !localToken) {
-                alert ("Ошибка удаления!");
-                return;
-            }
-
-            if (confirm("Удалить текущий аккаунт пользователя?\nБудут удалены также все сны текущего пользователя.")) {
-                try {
-                    const res = await fetch('/api/user/delete', {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: 'Bearer ' + localToken
-                        },
-                        body: JSON.stringify({ login, deviceID })
-                    });
-                    console.log(res.status)
-                    if (res.status === 200) {
-                        clearAuth();
+				if (res.status === 200) {
+					console.log(json);
+					if (json.token) {
+						localStorage.setItem('login', data.login);
+						localStorage.setItem('deviceID', json.deviceID);
+						localStorage.setItem('authToken', json.token);
+						await checkAuth(json.token);
 						navigate('main');
-                    }
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                }
-            }
-        }
+					}
+				} else if (res.status === 401) {
+					clearAuth();
+					navigate('login');
+				} else if (json.message) {
+					errors.push(json.message);
+					showErrors();
+				}
+			} catch (error) {
+				console.error('Ошибка:', error);
 
-        function clearAuth() {
-            localStorage.removeItem('login');
-            localStorage.removeItem('deviceID');
-            localStorage.removeItem('authToken');
+				errors.push('Непредвиденная ошибка');
+				showErrors();
+			}
 
-            const $authName = document.getElementById('auth-name');
-            if ($authName) {
-                $authName.style.display = 'none';
-                $authName.innerHTML = '';
-            }
-            document.getElementById('sign-in').style.display = 'block';
+			function showErrors() {
+				console.log('errors:', errors);
+				if (errors.length === 0) { return; }
 
-            document.getElementById('login-name').value = '';
-            document.getElementById('login-deviceid').value = '';
-        }
+				const $error = document.getElementById('login-error');
+				if ($error) {
+					$error.innerHTML = '<p>' + errors.join('</p><p>') + '</p>';
+				}
+			}
+		}
 
-        async function getDreams() {
-            const localToken = localStorage.getItem('authToken');
-            const $dreams = document.getElementById('dreams');
-            if (!$dreams) { return; }
+		async function checkAuth(token) {
+			const localToken = localStorage.getItem('authToken');
 
-            if (!localToken) {
-                $dreams.innerHTML = '<div>Авторизуйтесь, чтобы просматривать сны, записанные на <b>SberBoom</b>...</div>';
-                return;
-            }
+			if (localToken) {
+				if (token && token === localToken) {
+					setAuth();
+					return;
+				}
 
-            $dreams.innerHTML = '';
+				try {
+					const res = await fetch('/api/user/auth', {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: 'Bearer ' + localToken
+						}
+					});
 
-            try {
-                const res = await fetch('/api/dream', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: 'Bearer ' + localToken
-                    }
-                });
+					const json = await res.json();
 
-                const dreams = await res.json();
+					if (res.status && json.token) {
+						setAuth();
+					} else {
+						clearAuth();
+					}
+				} catch (error) {
+					console.error('Ошибка:', error);
+					clearAuth();
+				}
+			} else {
+				clearAuth();
+			}
 
-                const options = {
-                    // era      : 'long',
-                    year     : 'numeric',
-                    month    : 'long',
-                    day      : 'numeric',
-                    // weekday  : 'long',
-                    timezone : 'UTC',
-                    hour     : 'numeric',
-                    minute   : 'numeric',
-                    second   : 'numeric'
-                };
+			function setAuth() {
+				const $authName = document.getElementById('auth-name');
+				if ($authName) {
+					$authName.parentElement.parentElement.style.display = 'flex';
+					$authName.innerHTML = localStorage.getItem('login') || '(none)';
+				}
+				document.getElementById('sign-in').style.display = 'none';
+			}
+		}
 
-                if (res.status === 200 && Array.isArray(dreams) && dreams.length > 0) {
-                    dreams.forEach((dream) => {
-                        const text = dream.text.substr(0, 150),
-                              date = new Date(dream.createdAt);
-                        create('div', {
-                                id : dream.id,
-                                className: 'dream-card',
-                                onclick: function() { navigate('view', { dreamID: dream.id }); }
-                            }, $dreams,
-                            create('h3', { html: date.toLocaleString('ru', options) }),
-                            create('p',  { html: text + (dream.text.length > text.length ? '...' : '') })
-                        );
-                    });
-                } else {
-                    $dreams.innerHTML = 'Снов нет.'
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        }
+		async function deleteUser() {
+			const login = localStorage.getItem('login');
+			const localToken = localStorage.getItem('authToken');
+			const deviceID = localStorage.getItem('deviceID');
 
-        // function newDream() {
-        //     editingCard = null;
-        //     document.getElementById('dream-title').value = '';
-        //     document.getElementById('dream-text').value = '';
-        //     navigate('record');
-        // }
+			if (!login || !localToken) {
+				alert("Ошибка удаления!");
+				return;
+			}
 
-        async function navigate(pageId, p) {
-            if (!pageId) { return; }
-            const $page = document.getElementById(pageId);
-            if (!$page) { return; }
+			if (confirm("Удалить текущий аккаунт пользователя?\nБудут удалены также все сны текущего пользователя.")) {
+				try {
+					const res = await fetch('/api/user/delete', {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: 'Bearer ' + localToken
+						},
+						body: JSON.stringify({ login, deviceID })
+					});
+					console.log(res.status);
+					if (res.status === 200) {
+						clearAuth();
+						navigate('main');
+					}
+				} catch (error) {
+					console.error('Ошибка:', error);
+				}
+			}
+		}
 
-            p = p || {};
-            const type = p.type;
+		function clearAuth() {
+			localStorage.removeItem('login');
+			localStorage.removeItem('deviceID');
+			localStorage.removeItem('authToken');
 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            $page.classList.add('active');
-            document.querySelectorAll('.nav-links button').forEach(btn => btn.classList.remove('active'));
+			const $authName = document.getElementById('auth-name');
+			if ($authName) {
+				$authName.parentElement.parentElement.style.display = 'none';
+				$authName.innerHTML = '';
+			}
+			document.getElementById('sign-in').style.display = 'block';
 
-            switch (pageId) {
-                case 'main':
-                    await getDreams();
-                    // updatePlaceholder();
-                    break;
+			document.getElementById('login-name').value = '';
+			document.getElementById('login-deviceid').value = '';
+		}
 
-                // case 'record':
-                //     updateRecordDate();
-                //     document.getElementById('nav-record').classList.add('active');
-                //     break;
+		async function getDreams() {
+			const localToken = localStorage.getItem('authToken');
+			const $dreams = document.getElementById('dreams');
+			if (!$dreams) { return; }
 
-                case 'view':
-                    await viewDream(p.dreamID);
-                    break;
+			if (!localToken) {
+				$dreams.innerHTML = '<div>Войдите или зарегистрируйтесь, чтобы можно было просматривать записанные сны...</div>';
+				// $dreams.innerHTML = '<div>Авторизуйтесь, чтобы просматривать сны, записанные на <b>SberBoom</b>...</div>';
+				return;
+			}
 
-                case 'login':
-                    const $title    = $page.querySelector('.title-block > .title');
-                    const $subTitle = $page.querySelector('.title-block > .subtitle');
-                    if (type === 'profile') {
-                        $page.setAttribute('route', 'profile');
-                        $title.innerHTML = 'Профиль';
-                        $subTitle.style.display = 'none';
-                        document.getElementById('login-name').readOnly = true;
-                        document.getElementById('login-password').parentElement.style.display = 'none';
-                        document.getElementById('login-deviceid').parentElement.style.display = 'flex';
+			$dreams.innerHTML = '';
 
-                        document.getElementById('submit').innerHTML = 'Сохранить';
-                        document.getElementById('logout').style.display = 'block';
-                        document.getElementById('registration').style.display = 'none';
-                        document.getElementById('user-delete').style.display = 'block';
+			try {
+				const res = await fetch('/api/dream', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: 'Bearer ' + localToken
+					}
+				});
 
-                        document.getElementById('login-name').value = localStorage.getItem('login') || '';
-                        document.getElementById('login-deviceid').value = localStorage.getItem('deviceID') || '';
+				const dreams = await res.json();
 
-                    } else if (type === 'registration') {
-                        $page.setAttribute('route', 'registration');
-                        $title.innerHTML = 'Регистрация';
-                        $subTitle.style.display = 'none';
-                        document.getElementById('login-name').readOnly = false;
-                        document.getElementById('login-password').parentElement.style.display = 'flex';
-                        document.getElementById('login-deviceid').parentElement.style.display = 'flex';
+				const options = {
+					// era      : 'long',
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+					// weekday  : 'long',
+					timezone: 'UTC',
+					hour: 'numeric',
+					minute: 'numeric',
+					second: 'numeric'
+				};
 
-                        document.getElementById('submit').innerHTML = 'Зарегистрироваться';
-                        document.getElementById('logout').style.display = 'none';
-                        document.getElementById('registration').style.display = 'none';
-                        document.getElementById('user-delete').style.display = 'none';
-                    } else {
-                        $page.setAttribute('route', 'login');
-                        $title.innerHTML = 'Войдите';
-                        $subTitle.style.display = 'block';
-                        document.getElementById('login-name').readOnly = false;
-                        document.getElementById('login-password').parentElement.style.display = 'flex';
-                        document.getElementById('login-deviceid').parentElement.style.display = 'none';
+				if (res.status === 200 && Array.isArray(dreams) && dreams.length > 0) {
+					dreams.forEach((dream) => {
+						const text = dream.text.substr(0, 150),
+							date = new Date(dream.createdAt);
+						create('div', {
+							id: dream.id,
+							className: 'dream-card',
+							onclick: function () { navigate('view', { dreamID: dream.id }); }
+						}, $dreams,
+							create('h3', { html: date.toLocaleString('ru', options) }),
+							create('p', { html: text + (dream.text.length > text.length ? '...' : '') })
+						);
+					});
+				} else {
+					$dreams.innerHTML = '<p>Здесь будут отображаться записанные вами сны.</p><p>Пока еще ничего не записано.</p>';
+				}
+			} catch (error) {
+				console.error('Ошибка:', error);
+			}
+		}
 
-                        document.getElementById('submit').innerHTML = 'Войти';
-                        document.getElementById('logout').style.display = 'none';
-                        document.getElementById('registration').style.display = 'block';
-                        document.getElementById('user-delete').style.display = 'none';
-                    }
-                    document.getElementById('login-error').innerHTML = '';
-                    break;
-            }
-        }
+		// function newDream() {
+		//     editingCard = null;
+		//     document.getElementById('dream-title').value = '';
+		//     document.getElementById('dream-text').value = '';
+		//     navigate('record');
+		// }
 
-        // function updateRecordDate() {
-        //     const dateEl = document.getElementById('dream-date');
-        //     const today = new Date();
-        //     dateEl.textContent = `Date: ${today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}`;
-        // }
+		async function navigate(pageId, p) {
+			if (!pageId) { return; }
+			const $page = document.getElementById(pageId);
+			if (!$page) { return; }
 
-        // function updatePlaceholder() {
-        //     const placeholder = document.getElementById('no-dreams');
-        //     placeholder.style.display = document.querySelectorAll('#main .dream-card:not(#no-dreams)').length ? 'none' : 'block';
-        // }
+			p = p || {};
+			const type = p.type;
 
-        // function editDream(event) {
-        //     event.stopPropagation();
-        //     const card = event.currentTarget.parentElement;
-        //     editingCard = card;
-        //     document.getElementById('dream-title').value = card.dataset.title;
-        //     document.getElementById('dream-text').value = card.dataset.text;
-        //     document.getElementById('dream-date').textContent = card.dataset.date;
-        //     navigate('record');
-        // }
+			document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+			$page.classList.add('active');
+			document.querySelectorAll('.nav-links button').forEach(btn => btn.classList.remove('active'));
 
-        async function viewDream(dreamID) {
-            const localToken = localStorage.getItem('authToken');
-            let title = '',
-                text = '';
+			switch (pageId) {
+				case 'main':
+					await getDreams();
+					// updatePlaceholder();
+					break;
 
-            if (dreamID) {
-                try {
-                    const res = await fetch('/api/dream/' + dreamID, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: 'Bearer ' + localToken
-                        }
-                    });
+				// case 'record':
+				//     updateRecordDate();
+				//     document.getElementById('nav-record').classList.add('active');
+				//     break;
 
-                    const dream = await res.json();
+				case 'view':
+					await viewDream(p.dreamID);
+					break;
 
-                    const options = {
-                        year     : 'numeric',
-                        month    : 'long',
-                        day      : 'numeric',
-                        timezone : 'UTC',
-                        hour     : 'numeric',
-                        minute   : 'numeric',
-                        second   : 'numeric'
-                    };
+				case 'login':
+					const $title = $page.querySelector('.title-block > .title');
+					const $subTitle = $page.querySelector('.title-block > .subtitle');
+					if (type === 'profile') {
+						$page.setAttribute('route', 'profile');
+						$title.innerHTML = 'Профиль';
+						$subTitle.style.display = 'none';
+						document.getElementById('login-name').readOnly = true;
+						document.getElementById('login-password').parentElement.style.display = 'none';
+						document.getElementById('login-deviceid').parentElement.style.display = 'flex';
 
-                    if (res.status === 200 && dream) {
-                        title = new Date(dream.createdAt).toLocaleString('ru', options);
-                        text = dream.text;
-                    }
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                }
-            }
+						document.getElementById('submit').innerHTML = 'Сохранить';
+						document.getElementById('logout').style.display = 'block';
+						document.getElementById('registration').style.display = 'none';
+						document.getElementById('user-delete').style.display = 'block';
 
-            document.getElementById('view').setAttribute('dream-id', dreamID);
-            document.getElementById('view-title').textContent = title;
-            document.getElementById('view-content').textContent = text;
-            // navigate('view');
-        }
+						document.getElementById('login-name').value = localStorage.getItem('login') || '';
+						document.getElementById('login-deviceid').value = localStorage.getItem('deviceID') || '';
 
-        async function deleteDream() {
-            const localToken = localStorage.getItem('authToken');
-            const dreamID = document.getElementById('view').getAttribute('dream-id');
-            if (!dreamID) { return; }
+					} else if (type === 'registration') {
+						$page.setAttribute('route', 'registration');
+						$title.innerHTML = 'Регистрация';
+						$subTitle.style.display = 'none';
+						document.getElementById('login-name').readOnly = false;
+						document.getElementById('login-password').parentElement.style.display = 'flex';
+						document.getElementById('login-deviceid').parentElement.style.display = 'flex';
 
-            try {
-                const res = await fetch('/api/dream/' + dreamID, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: 'Bearer ' + localToken
-                    }
-                });
+						document.getElementById('submit').innerHTML = 'Зарегистрироваться';
+						document.getElementById('logout').style.display = 'none';
+						document.getElementById('registration').style.display = 'none';
+						document.getElementById('user-delete').style.display = 'none';
+					} else {
+						$page.setAttribute('route', 'login');
+						$title.innerHTML = 'Войдите';
+						$subTitle.style.display = 'block';
+						document.getElementById('login-name').readOnly = false;
+						document.getElementById('login-password').parentElement.style.display = 'flex';
+						document.getElementById('login-deviceid').parentElement.style.display = 'none';
 
-                if (res.status === 200) {
-                    navigate('main');
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        }
+						document.getElementById('submit').innerHTML = 'Войти';
+						document.getElementById('logout').style.display = 'none';
+						document.getElementById('registration').style.display = 'block';
+						document.getElementById('user-delete').style.display = 'none';
+					}
+					document.getElementById('login-error').innerHTML = '';
+					break;
+			}
+		}
 
-        // function saveDream() {
-        //     const title = document.getElementById('dream-title').value.trim() || 'Untitled';
-        //     const text = document.getElementById('dream-text').value.trim();
-        //     const dateText = document.getElementById('dream-date').textContent.replace('Date: ', '');
-        //     if (editingCard) { editingCard.remove(); }
+		// function updateRecordDate() {
+		//     const dateEl = document.getElementById('dream-date');
+		//     const today = new Date();
+		//     dateEl.textContent = `Date: ${today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}`;
+		// }
 
-        //     const card = document.createElement('div');
-        //     card.className = 'dream-card';
-        //     card.dataset.title = title;
-        //     card.dataset.date = dateText;
-        //     card.dataset.text = text;
-        //     card.innerHTML = `
-        //         <h3>${title}</h3>
-        //         <p>Date: ${dateText}</p>
-        //         <p>${text.length > 100 ? text.substring(0, 100) + '...' : text}</p>
-        //         <button class="edit-btn" onclick="event.stopPropagation(); editDream(event)">
-        //             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-        //                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-        //                 <line x1="18" y1="6" x2="6" y2="18" />
-        //                 <line x1="15" y1="3" x2="21" y2="9" />
-        //             </svg>
-        //         </button>
-        //         <button class="delete-btn" onclick="event.stopPropagation(); this.parentElement.remove(); updatePlaceholder();">
-        //             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-        //                 <polyline points="3 6 5 6 21 6" />
-        //                 <path d="M19 6l-2 14H7L5 6m5 0V4h4v2" />
-        //                 <line x1="10" y1="11" x2="10" y2="17" />
-        //                 <line x1="14" y1="11" x2="14" y2="17" />
-        //             </svg>
-        //         </button>
-        //     `;
-        //     card.onclick = () => viewDream(title, dateText, text);
-        //     document.getElementById('main').appendChild(card);
-        //     updatePlaceholder();
-        //     navigate('main');
-        // }
+		// function updatePlaceholder() {
+		//     const placeholder = document.getElementById('no-dreams');
+		//     placeholder.style.display = document.querySelectorAll('#main .dream-card:not(#no-dreams)').length ? 'none' : 'block';
+		// }
 
-        function create(tagName, attributes, appendTo) {
-            var el, templ, child, attr, i, val;
-            if (!tagName) { return null; }
+		// function editDream(event) {
+		//     event.stopPropagation();
+		//     const card = event.currentTarget.parentElement;
+		//     editingCard = card;
+		//     document.getElementById('dream-title').value = card.dataset.title;
+		//     document.getElementById('dream-text').value = card.dataset.text;
+		//     document.getElementById('dream-date').textContent = card.dataset.date;
+		//     navigate('record');
+		// }
 
-            switch (tagName) {
-                case 'fragment':
-                    el = document.createDocumentFragment();
-                    break;
+		async function viewDream(dreamID) {
+			const localToken = localStorage.getItem('authToken');
+			let title = '',
+				text = '';
 
-                case 'html':
-                    if (typeof attributes === 'object' && 'html' in attributes) {
-                        el = document.createDocumentFragment();
-                        templ = document.createElement('template');
-                        templ.innerHTML = attributes.html;
-                        while ((child = templ.firstElementChild)) {
-                            el.appendChild(child);
-                        }
-                    }
-                    break;
+			if (dreamID) {
+				try {
+					const res = await fetch('/api/dream/' + dreamID, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: 'Bearer ' + localToken
+						}
+					});
 
-                default:
-                    el = document.createElement(tagName);
+					const dream = await res.json();
 
-                    if (typeof attributes === 'object') {
-                        for (attr in attributes) {
-                            // if (!attributes[attr]) { continue; }
-                            switch (attr) {
-                                case 'value':
-                                    el.value = attributes[attr];
-                                    break;
-                                case 'checked':
-                                    if (el.nodeName === 'INPUT' && (attributes['type'] === 'checkbox' || attributes['type'] === 'radio')) {
-                                        el.checked = attributes[attr];
-                                    } else {
-                                        el.setAttribute(attr, attributes[attr]);
-                                    }
-                                    break;
-                                case 'html':
-                                    el.innerHTML = attributes[attr];
-                                    break;
-                                case 'className':
-                                    el.className = attributes[attr];
-                                    break;
-                                case 'style':
-                                    el.style.cssText = attributes[attr];
-                                    break;
-                                case 'onclick':
-                                case 'onchange':
-                                    el[attr] = attributes[attr];
-                                    break;
-                                default:
-                                    el.setAttribute(attr, attributes[attr]);
-                            }
-                        }
-                    }
-            }
+					const options = {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						timezone: 'UTC',
+						hour: 'numeric',
+						minute: 'numeric',
+						second: 'numeric'
+					};
 
-            for (i = 3; i < arguments.length; i++) {
-                val = arguments[i];
-                if (!val) { continue; }
-                if (typeof val === 'string') {
-                    val = document.createTextNode(val);
-                }
+					if (res.status === 200 && dream) {
+						title = new Date(dream.createdAt).toLocaleString('ru', options);
+						text = dream.text;
+					}
+				} catch (error) {
+					console.error('Ошибка:', error);
+				}
+			}
 
-                el.appendChild(val);
-            }
+			document.getElementById('view').setAttribute('dream-id', dreamID);
+			document.getElementById('view-title').textContent = title;
+			document.getElementById('view-content').textContent = text;
+			// navigate('view');
+		}
 
-            if (appendTo) {
-                appendTo.appendChild(el);
-            }
+		async function deleteDream() {
+			const localToken = localStorage.getItem('authToken');
+			const dreamID = document.getElementById('view').getAttribute('dream-id');
+			if (!dreamID) { return; }
 
-            return el;
-        }
+			try {
+				const res = await fetch('/api/dream/' + dreamID, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: 'Bearer ' + localToken
+					}
+				});
 
-    </script>
+				if (res.status === 200) {
+					navigate('main');
+				}
+			} catch (error) {
+				console.error('Ошибка:', error);
+			}
+		}
+
+		// function saveDream() {
+		//     const title = document.getElementById('dream-title').value.trim() || 'Untitled';
+		//     const text = document.getElementById('dream-text').value.trim();
+		//     const dateText = document.getElementById('dream-date').textContent.replace('Date: ', '');
+		//     if (editingCard) { editingCard.remove(); }
+
+		//     const card = document.createElement('div');
+		//     card.className = 'dream-card';
+		//     card.dataset.title = title;
+		//     card.dataset.date = dateText;
+		//     card.dataset.text = text;
+		//     card.innerHTML = `
+		//         <h3>${title}</h3>
+		//         <p>Date: ${dateText}</p>
+		//         <p>${text.length > 100 ? text.substring(0, 100) + '...' : text}</p>
+		//         <button class="edit-btn" onclick="event.stopPropagation(); editDream(event)">
+		//             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+		//                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+		//                 <line x1="18" y1="6" x2="6" y2="18" />
+		//                 <line x1="15" y1="3" x2="21" y2="9" />
+		//             </svg>
+		//         </button>
+		//         <button class="delete-btn" onclick="event.stopPropagation(); this.parentElement.remove(); updatePlaceholder();">
+		//             <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+		//                 <polyline points="3 6 5 6 21 6" />
+		//                 <path d="M19 6l-2 14H7L5 6m5 0V4h4v2" />
+		//                 <line x1="10" y1="11" x2="10" y2="17" />
+		//                 <line x1="14" y1="11" x2="14" y2="17" />
+		//             </svg>
+		//         </button>
+		//     `;
+		//     card.onclick = () => viewDream(title, dateText, text);
+		//     document.getElementById('main').appendChild(card);
+		//     updatePlaceholder();
+		//     navigate('main');
+		// }
+
+		function create(tagName, attributes, appendTo) {
+			var el, templ, child, attr, i, val;
+			if (!tagName) { return null; }
+
+			switch (tagName) {
+				case 'fragment':
+					el = document.createDocumentFragment();
+					break;
+
+				case 'html':
+					if (typeof attributes === 'object' && 'html' in attributes) {
+						el = document.createDocumentFragment();
+						templ = document.createElement('template');
+						templ.innerHTML = attributes.html;
+						while ((child = templ.firstElementChild)) {
+							el.appendChild(child);
+						}
+					}
+					break;
+
+				default:
+					el = document.createElement(tagName);
+
+					if (typeof attributes === 'object') {
+						for (attr in attributes) {
+							// if (!attributes[attr]) { continue; }
+							switch (attr) {
+								case 'value':
+									el.value = attributes[attr];
+									break;
+								case 'checked':
+									if (el.nodeName === 'INPUT' && (attributes['type'] === 'checkbox' || attributes['type'] === 'radio')) {
+										el.checked = attributes[attr];
+									} else {
+										el.setAttribute(attr, attributes[attr]);
+									}
+									break;
+								case 'html':
+									el.innerHTML = attributes[attr];
+									break;
+								case 'className':
+									el.className = attributes[attr];
+									break;
+								case 'style':
+									el.style.cssText = attributes[attr];
+									break;
+								case 'onclick':
+								case 'onchange':
+									el[attr] = attributes[attr];
+									break;
+								default:
+									el.setAttribute(attr, attributes[attr]);
+							}
+						}
+					}
+			}
+
+			for (i = 3; i < arguments.length; i++) {
+				val = arguments[i];
+				if (!val) { continue; }
+				if (typeof val === 'string') {
+					val = document.createTextNode(val);
+				}
+
+				el.appendChild(val);
+			}
+
+			if (appendTo) {
+				appendTo.appendChild(el);
+			}
+
+			return el;
+		}
+
+	</script>
 </body>
+
 </html>
